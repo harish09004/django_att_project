@@ -1,0 +1,89 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Edit Attendance</title>
+    <link rel="stylesheet" href="{% static 'css/editstudent.css' %}">
+</head>
+<body>
+    <h2>Edit Attendance</h2>
+
+     <form method="GET" action="{% url 'edit_attendance' %}">
+        <label for="report_department">Department:</label>
+        <select name="department" id="report_department" onchange="this.form.submit()">
+            <option value="">-- Select Department --</option>
+            <option value="cs" {% if request.GET.department == "cs" %}selected{% endif %}>Computer Science</option>
+            <option value="it" {% if request.GET.department == "it" %}selected{% endif %}>Information Technology</option>
+            <option value="bca" {% if request.GET.department == "bca" %}selected{% endif %}>BCA</option>
+        </select>
+
+        <label for="report_year">Year:</label>
+        <select name="year" id="report_year" onchange="this.form.submit()">
+            <option value="">-- Select Year --</option>
+            <option value="1st" {% if request.GET.year == "1st" %}selected{% endif %}>1st Year</option>
+            <option value="2nd" {% if request.GET.year == "2nd" %}selected{% endif %}>2nd Year</option>
+            <option value="3rd" {% if request.GET.year == "3rd" %}selected{% endif %}>3rd Year</option>
+        </select>
+    </form>
+
+    {% if students %}
+    <form method="GET" action="{% url 'edit_attendance' %}">
+        <input type="hidden" name="department" value="{{ request.GET.department }}">
+        <input type="hidden" name="year" value="{{ request.GET.year }}">
+
+        <label for="student_id">Select Student:</label>
+        <select name="student_id" id="student_id">
+            {% for student in students %}
+            <option value="{{ student.id }}" {% if request.GET.student_id == student.id|stringformat:"s" %}selected{% endif %}>{{ student.name }}</option>
+            {% endfor %}
+        </select>
+
+        <label for="time_period">Time Period:</label>
+        <select name="time_period" id="time_period">
+            <option value="week" {% if request.GET.time_period == "week" %}selected{% endif %}>Past Week</option>
+            <option value="month" {% if request.GET.time_period == "month" %}selected{% endif %}>Past Month</option>
+            <option value="6months" {% if request.GET.time_period == "6months" %}selected{% endif %}>Past 6 Months</option>
+            <option value="year" {% if request.GET.time_period == "year" %}selected{% endif %}>Past Year</option>
+        </select>
+
+        <button type="submit">submit</button>
+    </form>
+    {% endif %}
+
+    {% if attendance_records %}
+    <h3>Attendance Records</h3>
+    <form method="POST" action="{% url 'update_attendance' %}">
+        {% csrf_token %}
+        <table border="1">
+            <tr>
+                <th>Date</th>
+                <th>Status</th>
+                <th>Change Status</th>
+                <th>Reason</th>
+            </tr>
+            {% for record in attendance_records %}
+            <tr>
+                <td>{{ record.date }}</td>
+                <td>{{ record.status }}</td>
+                <td>
+                    <select name="attendance_status_{{ record.id }}">
+                        <option value="present" {% if record.status == "present" %}selected{% endif %}>Present</option>
+                        <option value="absent" {% if record.status == "absent" %}selected{% endif %}>Absent</option>
+                    </select>
+                </td>
+                <td>
+                    <input type="text" name="reason_{{ record.id }}" value="{{ record.reason|default:'' }}" placeholder="Enter reason">
+                </td>
+            </tr>
+            {% endfor %}
+        </table>
+        <button type="submit">Update Attendance</button>
+    </form>
+    {% endif %}
+    
+
+    <a href="{% url 'staff_page' %}">Back to Staff Page</a>
+</body>
+</html>

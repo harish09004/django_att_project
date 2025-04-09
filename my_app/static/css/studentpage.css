@@ -1,0 +1,137 @@
+/* General Reset */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: Arial, sans-serif;
+}
+
+/* Body Styling */
+body {
+    background-color: #f4f4f4;
+    color: #333;
+    text-align: center;
+    padding: 20px;
+}
+
+/* Header */
+header {
+    background: linear-gradient(90deg, #6a5acd, #9370db);
+    color: white;
+    text-align: center;
+    padding: 30px 0;
+    position: relative;
+    box-shadow: 0px 6px 20px rgba(0, 0, 0, 0.3);
+    border-radius: 0 0 25px 25px;
+}
+.logo, .rlogo {
+    position: absolute;
+    top: 15px;
+    height: 100px;
+}
+
+.logo {
+    left: 30px;
+}
+
+.rlogo {
+    right: 30px;
+}
+
+.add {
+    font-size: 14px;
+    margin-top: 5px;
+    opacity: 0.8;
+}
+
+
+/* Selection Section */
+.selection {
+    background: white;
+    padding: 20px;
+    width: 90%;
+    max-width: 500px;
+    margin: 20px auto;
+    border-radius: 8px;
+    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.selection h1 {
+    font-size: 20px;
+    margin-bottom: 15px;
+}
+
+label {
+    display: block;
+    font-size: 16px;
+    margin: 10px 0 5px;
+    font-weight: bold;
+}
+
+select {
+    width: 100%;
+    padding: 8px;
+    font-size: 16px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    background-color: #fff;
+}
+
+button {
+    background-color: #28a745;
+    color: white;
+    border: none;
+    padding: 10px;
+    font-size: 16px;
+    border-radius: 5px;
+    cursor: pointer;
+    width: 100%;
+    margin-top: 15px;
+    transition: background 0.3s ease-in-out;
+}
+
+button:hover {
+    background-color: #218838;
+}
+
+/* Students Container */
+#students-container {
+    margin-top: 20px;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+}
+
+.student {
+    background: white;
+    padding: 15px;
+    margin: 10px;
+    border-radius: 8px;
+    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+    width: 250px;
+    text-align: left;
+}
+
+.student p {
+    font-size: 14px;
+    margin: 5px 0;
+}
+
+.student strong {
+    font-size: 16px;
+    color: #2c3e50;
+}
+
+.logout-btn {
+    display: inline-block;
+    padding: 8px 16px;
+    background-color: #d9534f;
+    color: white;
+    text-decoration: none;
+    border-radius: 5px;
+    font-weight: bold;
+}
+
+.logout-btn:hover {
+    background-color: #c9302c;
+}

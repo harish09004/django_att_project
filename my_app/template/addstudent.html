@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Add Student</title>
+    {% load static %}
+    <link rel="stylesheet" type="text/css" href="{% static 'css/addstudent.css' %}">
+    <header>
+        <div class="he">
+            <h1>PKN ARTS AND SCIENCE COLLEGE 
+                <div class="add">5, Thirumangalam, Madurai-625706 <br> Ph: 8274398378 <br> Email: pknartsandsciencecollege@gmail.com</div>
+            </h1>
+        </div>
+        <img src="{% static 'images/pknlogo.png' %}" alt="clg log" class="logo">
+        <img src="{% static 'images/pknrightlogo.png' %}" alt="clgrlog" class="rlogo">
+    </header>  
+</head>
+<body>
+    <header>
+        <h1>Staff Dashboard</h1>
+    </header>
+
+    <div class="stform">
+        <h2>Add a New Student</h2>
+
+        <!-- Student Form -->
+        <form method="post">
+            {% csrf_token %}
+            {{ form.as_p }}  <!-- This will now include Roll Number -->
+            <button type="submit" class="btn btn-primary">Submit</button>  <!-- Moved inside form -->
+        </form>
+        
+        <br>
+        <a href="{% url 'staff_page' %}">Go back to Staff Dashboard</a>  <!-- Link to redirect to staff dashboard -->
+    </div>
+
+    <footer>
+        <p>&copy; 2024 PKN College</p>
+    </footer>
+</body>
+</html>

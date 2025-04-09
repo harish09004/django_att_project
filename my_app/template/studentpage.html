@@ -1,0 +1,111 @@
+<!DOCTYPE HTML>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    {% load static %}
+    <link rel="stylesheet" type="text/css" href="{% static 'css/studentpage.css' %}">
+    <title>Attendance</title>
+</head>
+<body>
+<header>
+    <div class="he">
+        <h1>PKN ARTS AND SCIENCE COLLEGE</h1>
+        <div class="add">5, Thirumangalam, Madurai-625706<br> Ph: 8274398378<br> Email: pknartsandsciencecollege@gmail.com</div>
+    </div>
+    <img src="{% static 'images/pknlogo.png' %}" alt="College logo" class="logo">
+    <img src="{% static 'images/pknrightlogo.png' %}" alt="College logo" class="rlogo">
+</header>
+<form method="POST" action="{% url 'logout' %}" class="logout-form">
+    {% csrf_token %}
+    <button type="submit" class="logout-btn">Logout</button>
+</form>
+
+
+<div class="selection">
+    <h1>Select Department and Year</h1>
+    <label for="dept">Department</label>
+    <select id="department" onchange="store()">
+        <option value="">Select a department</option>
+        <option value="cs">CSC</option>
+        <option value="it">IT</option>
+        <option value="bca">BCA</option>
+    </select>
+
+    <label for="year">Year:</label>
+    <select id="year" disabled>
+        <option value="">Select a year</option>
+    </select>
+
+    <button onclick="showstudents()">Show Students</button>
+</div>
+
+<!-- Container for displaying students and attendance buttons -->
+<div id="students-container"></div>
+
+<script>
+    function store() {
+        const dept = document.getElementById('department').value;
+        const year = document.getElementById('year');
+        year.innerHTML = ""; // Clear previous years
+    
+        if (dept) {
+            const years = ['1st', '2nd', '3rd'];
+            year.disabled = false;
+            years.forEach(function(yearValue) {
+                const option = document.createElement('option');
+                option.value = yearValue;  // Fixed: No `.toLowerCase()`
+                option.textContent = yearValue;
+                year.appendChild(option);
+            });
+        } else {
+            year.disabled = true;
+        }
+    }
+    
+    function showstudents() {
+        const department = document.getElementById('department').value;
+        const year = document.getElementById('year').value;
+        
+        if (!department || !year) {
+            alert('Please select both department and year.');
+            return;
+        }
+    
+        fetch(`/show_students/?department=${department}&year=${year}`)
+            .then(response => response.json())
+            .then(data => {
+                const studentsContainer = document.getElementById('students-container');
+                studentsContainer.innerHTML = ''; // Clear previous data
+    
+                if (data.success) {
+                    if (data.students.length === 0) {
+                        studentsContainer.innerHTML = '<p>No students found for the selected department and year.</p>';
+                        return;
+                    }
+    
+                    data.students.forEach(student => {
+                        const studentDiv = document.createElement('div');
+                        studentDiv.classList.add('student');
+    
+                        studentDiv.innerHTML = `
+                            <p><strong>${student.student_name}</strong></p>
+                            <p>Student ID: ${student.student_id}</p>
+                            <p>Present: ${student.present_count}</p>
+                            <p>Absent: ${student.absent_count}</p>
+                        `;
+    
+                        studentsContainer.appendChild(studentDiv);
+                    });
+                } else {
+                    alert('Error fetching student data.');
+                }
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                alert('There was an error fetching student data. Please try again later.');
+            });
+    }
+    </script>
+</body>
+</html>    

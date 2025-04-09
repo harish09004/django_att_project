@@ -1,0 +1,85 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Staff Page - Attendance System</title>
+    <link rel="stylesheet" href="{% static 'css/staffpage.css' %}">
+</head>
+<body>
+    <header>
+        <div class="header-content">
+            <h1>PKN ARTS AND SCIENCE COLLEGE</h1>
+            <div class="add">5, Thirumangalam, Madurai - 625706 <br> Ph: 8274398378 <br> Email: pknartsandsciencecollege@gmail.com</div>
+        </div>
+        <img src="{% static 'images/pknlogo.png' %}" alt="College Logo" class="logo">
+        <img src="{% static 'images/pknrightlogo.png' %}" alt="Right Logo" class="rlogo">
+    </header>  
+    <h2>Staff Page</h2>
+    <form method="POST" action="{% url 'logout' %}" class="logout-form">
+        {% csrf_token %}
+        <button type="submit" class="logout-btn">Logout</button>
+    </form>
+    
+    </a>
+
+    <!-- Dropdowns for selecting Department & Year -->
+    <form method="GET" action="{% url 'staff_page' %}">
+        <label for="department">Select Department:</label>
+        <select name="department" id="department">
+            <option value="cs">Computer Science</option>
+            <option value="it">Information Technology</option>
+            <option value="bca">BCA</option>
+        </select>
+
+        <label for="year">Select Year:</label>
+        <select name="year" id="year">
+            <option value="1st">1st Year</option>
+            <option value="2nd">2nd Year</option>
+            <option value="3rd">3rd Year</option>
+        </select>
+
+        <button type="submit">Fetch Students</button>
+    </form>
+
+    {% if students %}
+    <h3>Student List</h3>
+    <form method="POST" action="{% url 'mark_attendance' %}">
+        {% csrf_token %}
+        <input type="hidden" name="department" value="{{ request.GET.department }}">
+        <input type="hidden" name="year" value="{{ request.GET.year }}">
+        <table border="1">
+            <tr>
+                <th>Roll Number</th>
+                <th>Name</th>
+                <th>Department</th>
+                <th>Year</th>
+                <th>Absent</th>
+            </tr>
+            {% for student in students %}
+            <tr>
+                <td>{{ student.roll_number }}</td>
+                <td>{{ student.name }}</td>
+                <td>{{ student.department }}</td>
+                <td>{{ student.year }}</td>
+                <td>
+                    <input type="checkbox" name="absent_students" value="{{ student.id }}">
+                </td>
+            </tr>
+            {% endfor %}
+        </table>
+        <button type="submit">Submit Attendance</button>
+    </form>
+    {% endif %}
+
+    <!-- Add/Remove Student Section -->
+    <h3>Manage Students</h3>
+    <a href="{% url 'add_student' %}">Add Student</a> | 
+    <a href="{% url 'remove_student' %}">Remove Student</a> |
+    <a href="{% url 'generate_report' %}">generate report</a> |
+    <a href="{% url 'edit_attendance' %}">Edit Attendance</a> |
+
+    
+</body>
+</html>

@@ -1,0 +1,49 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Remove Student</title>
+    <link rel="stylesheet" href="{% static 'css/removestudent.css' %}">
+</head>
+<body>
+    <h2>Remove Student</h2>
+    <form method="GET" action="{% url 'remove_student' %}">
+        <label for="report_department">Department:</label>
+        <select name="department" id="report_department" onchange="this.form.submit()">
+            <option value="">-- Select Department --</option>
+            <option value="cs" {% if request.GET.department == "cs" %}selected{% endif %}>Computer Science</option>
+            <option value="it" {% if request.GET.department == "it" %}selected{% endif %}>Information Technology</option>
+            <option value="bca" {% if request.GET.department == "bca" %}selected{% endif %}>BCA</option>
+        </select>
+
+        <label for="report_year">Year:</label>
+        <select name="year" id="report_year" onchange="this.form.submit()">
+            <option value="">-- Select Year --</option>
+            <option value="1st" {% if request.GET.year == "1st" %}selected{% endif %}>1st Year</option>
+            <option value="2nd" {% if request.GET.year == "2nd" %}selected{% endif %}>2nd Year</option>
+            <option value="3rd" {% if request.GET.year == "3rd" %}selected{% endif %}>3rd Year</option>
+        </select>
+    </form>
+
+    {% if students %}
+    <form method="GET" action="{% url 'remove_student' %}">
+        <input type="hidden" name="department" value="{{ request.GET.department }}">
+        <input type="hidden" name="year" value="{{ request.GET.year }}">
+
+        <label for="student_id">Select Student:</label>
+        <select name="student_id" id="student_id">
+            {% for student in students %}
+            <option value="{{ student.id }}" {% if request.GET.student_id == student.id|stringformat:"s" %}selected{% endif %}>{{ student.name }}</option>
+            {% endfor %}
+        </select>
+
+        <button type="submit">Remove Student</button>
+    </form>
+    {% endif %}
+
+
+    <a href="{% url 'staff_page' %}">Back to Staff Page</a>
+</body>
+</html>

@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Generate Attendance Report</title>
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'css/generatereport.css' %}">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script> <!-- ✅ Ensure Chart.js is loaded -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+    <!--<header>
+        <div class="header-content">
+            <h1>PKN ARTS AND SCIENCE COLLEGE</h1>
+            <div class="add">5, Thirumangalam, Madurai - 625706 <br> Ph: 8274398378 <br> Email: pknartsandsciencecollege@gmail.com</div>
+        </div>
+        <img src="{% static 'images/pknlogo.png' %}" alt="College Logo" class="logo">
+        <img src="{% static 'images/pknrightlogo.png' %}" alt="Right Logo" class="rlogo">
+    </header> --> 
+    <h2>Generate Attendance Report</h2>
+
+    <form method="GET" action="{% url 'generate_report' %}">
+        <label for="report_department">Department:</label>
+        <select name="department" id="report_department" onchange="this.form.submit()">
+            <option value="">-- Select Department --</option>
+            <option value="cs" {% if request.GET.department == "cs" %}selected{% endif %}>Computer Science</option>
+            <option value="it" {% if request.GET.department == "it" %}selected{% endif %}>Information Technology</option>
+            <option value="bca" {% if request.GET.department == "bca" %}selected{% endif %}>BCA</option>
+        </select>
+
+        <label for="report_year">Year:</label>
+        <select name="year" id="report_year" onchange="this.form.submit()">
+            <option value="">-- Select Year --</option>
+            <option value="1st" {% if request.GET.year == "1st" %}selected{% endif %}>1st Year</option>
+            <option value="2nd" {% if request.GET.year == "2nd" %}selected{% endif %}>2nd Year</option>
+            <option value="3rd" {% if request.GET.year == "3rd" %}selected{% endif %}>3rd Year</option>
+        </select>
+    </form>
+
+    {% if students %}
+    <form method="GET" action="{% url 'generate_report' %}">
+        <input type="hidden" name="department" value="{{ request.GET.department }}">
+        <input type="hidden" name="year" value="{{ request.GET.year }}">
+
+        <label for="student_id">Select Student:</label>
+        <select name="student_id" id="student_id">
+            {% for student in students %}
+            <option value="{{ student.id }}" {% if request.GET.student_id == student.id|stringformat:"s" %}selected{% endif %}>{{ student.name }}</option>
+            {% endfor %}
+        </select>
+
+        <label for="time_period">Time Period:</label>
+        <select name="time_period" id="time_period">
+            <option value="week" {% if request.GET.time_period == "week" %}selected{% endif %}>Past Week</option>
+            <option value="month" {% if request.GET.time_period == "month" %}selected{% endif %}>Past Month</option>
+            <option value="6months" {% if request.GET.time_period == "6months" %}selected{% endif %}>Past 6 Months</option>
+            <option value="year" {% if request.GET.time_period == "year" %}selected{% endif %}>Past Year</option>
+        </select>
+
+        <button type="submit">Generate Report</button>
+    </form>
+    {% endif %}
+
+    {% if student and records %}
+    <h3>Attendance Report for {{ student.name }}</h3>
+    <table border="1">
+        <tr>
+            <th>Date</th>
+            <th>Status</th>
+        </tr>
+        {% for record in records %}
+        <tr>
+            <td>{{ record.date }}</td>
+            <td>{{ record.status }}</td>
+        </tr>
+        {% endfor %}
+    </table>
+
+    <div id="chart-container"style="width: 40%; max-width: 400px;">
+        <canvas id="attendanceChart"></canvas>
+    </div>
+      <!-- ✅ Add Chart Canvas -->
+    
+    <!-- Embed attendance_data safely as JSON -->
+<script type="application/json" id="attendance-data">
+    {{ attendance_data|safe }}
+</script>
+
+<<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        // Ensure values are numbers
+        var presentCount = {{ attendance_data.present|default:0 }};
+        var absentCount = {{ attendance_data.absent|default:0 }};
+        var totalDays = presentCount + absentCount;
+
+        console.log("Present:", presentCount, "Absent:", absentCount, "Total:", totalDays);
+
+        if (totalDays === 0) {
+            console.log("No attendance data available.");
+            document.getElementById('attendanceChartContainer').innerHTML = "<p>No attendance data available for the selected period.</p>";
+            return;
+        }
+
+        var ctx = document.getElementById('attendanceChart').getContext('2d');
+
+        new Chart(ctx, {
+            type: 'doughnut',  // More professional than pie
+            data: {
+                labels: [
+                    `Present (${presentCount} days)`, 
+                    `Absent (${absentCount} days)`
+                ],
+                datasets: [{
+                    data: [presentCount, absentCount],
+                    backgroundColor: ['#4CAF50', '#F44336'],
+                    borderColor: ['#2E7D32', '#B71C1C'],
+                    borderWidth: 1
+                }]
+            },
+            options: {
+                responsive: true,
+                plugins: {
+                    legend: {
+                        position: 'top'
+                    },
+                    tooltip: {
+                        callbacks: {
+                            label: function(tooltipItem) {
+                                let value = tooltipItem.raw;
+                                let percentage = ((value / totalDays) * 100).toFixed(2);
+                                return `${value} days (${percentage}%)`;
+                            }
+                        }
+                    }
+                }
+            }
+        });
+    });
+</script>
+
+
+    {% elif student %}
+    <p>No attendance records found for the selected time period.</p>
+    {% endif %}
+
+    <br>
+    <a href="{% url 'staff_page' %}">Back to Staff Dashboard</a>
+
+</body>
+</html>

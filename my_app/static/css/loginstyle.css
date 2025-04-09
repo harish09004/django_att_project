@@ -1,0 +1,116 @@
+body {
+    font-family: 'Poppins', sans-serif;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    background: linear-gradient(135deg, #eef2f3, #d3cce3);
+    margin: 0;
+}
+
+/* Login Box */
+.lg {
+    background: white;
+    padding: 50px;
+    border-radius: 12px;
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
+    text-align: center;
+    width: 350px;
+    transition: transform 0.3s ease-in-out;
+}
+
+.lg:hover {
+    transform: scale(1.02);
+}
+
+/* Heading */
+h2 {
+    font-size: 28px;
+    color: #333;
+    margin-bottom: 20px;
+}
+
+/* Input Fields */
+.ig {
+    margin: 15px 0;
+    text-align: left;
+}
+
+.ig label {
+    font-weight: bold;
+    font-size: 14px;
+    color: #555;
+}
+
+.ig input {
+    width: 100%;
+    padding: 12px;
+    border: 2px solid #ccc;
+    border-radius: 6px;
+    font-size: 16px;
+    transition: 0.3s;
+    outline: none;
+}
+
+.ig input:focus {
+    border-color: #6a5acd;
+    box-shadow: 0 0 8px rgba(106, 90, 205, 0.5);
+}
+
+/* Login Button */
+.button {
+    width: 100%;
+    padding: 12px;
+    font-size: 18px;
+    font-weight: bold;
+    color: white;
+    background: linear-gradient(90deg, #6a5acd, #9370db);
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: 0.3s;
+    margin-top: 10px;
+    box-shadow: 3px 3px 10px rgba(0, 0, 0, 0.2);
+}
+
+.button:hover {
+    background: linear-gradient(90deg, #9370db, #6a5acd);
+    transform: translateY(-3px);
+    box-shadow: 5px 5px 15px rgba(0, 0, 0, 0.3);
+}
+
+.button:active {
+    transform: scale(0.98);
+}
+
+/* Error Message */
+.messages {
+    margin-top: 15px;
+}
+
+.error-message {
+    color: #d9534f;
+    background: #f8d7da;
+    padding: 10px;
+    border-left: 5px solid #d9534f;
+    border-radius: 5px;
+    font-size: 14px;
+}
+
+/* Responsive Design */
+@media (max-width: 400px) {
+    .lg {
+        width: 90%;
+        padding: 40px;
+    }
+}
+
+
+
+
+/* Reset styles for consistency */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}

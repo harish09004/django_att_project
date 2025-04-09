@@ -1,0 +1,70 @@
+<!DOCTYPE HTML>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        {% load static %}
+        <link rel="stylesheet" type="text/css" href="{% static 'css/style.css' %}">
+        <title>Attendance System - PKN Arts and Science College</title>
+    </head>
+    <body>
+        <header>
+            <div class="header-content">
+                <h1>PKN ARTS AND SCIENCE COLLEGE</h1>
+                <div class="add">5, Thirumangalam, Madurai - 625706 <br> Ph: 8274398378 <br> Email: pknartsandsciencecollege@gmail.com</div>
+            </div>
+            <img src="{% static 'images/pknlogo.png' %}" alt="College Logo" class="logo">
+            <img src="{% static 'images/pknrightlogo.png' %}" alt="Right Logo" class="rlogo">
+        </header>  
+        
+        <main>
+            <nav class="button-container">
+                <a href="{% url 'stafflogin' %}" >
+                    <button class="button">Staff Login</button>
+                </a>
+                <a href="{% url 'studentlogin' %}">
+                    <button class="button">Student Login</button>
+                </a>       
+            </nav>
+            <section class="intro">
+                <h2>Welcome to PKN Arts and Science College Attendance System</h2>
+                <p>Our digital attendance system helps streamline attendance tracking for both students and staff, ensuring accuracy and efficiency.</p>
+            </section>
+            <section class="institution">
+                <h2>Our Institution</h2>
+                <img src="{% static 'css/pkn.jpg' %}" alt="Institution Image" class="institution-image">
+                <p>PKN Arts and Science College is dedicated to providing quality education and fostering innovation for a better future.</p>
+            </section>
+            
+            <section class="quote">
+                <blockquote>
+                    "Education is the passport to the future, for tomorrow belongs to those who prepare for it today." – Malcolm X
+                </blockquote>
+            </section>
+            
+            <section class="features">
+                <h2>Why Choose Our Attendance System?</h2>
+                <ul>
+                    <li>Easy-to-use interface for students and staff.</li>
+                    <li>Real-time attendance tracking.</li>
+                    <li>Secure and reliable database integration.</li>
+                    <li>Accessible from anywhere, anytime.</li>
+                    <li>Eco-friendly and paperless solution.</li>
+                </ul>
+            </section>
+            
+            <section class="about">
+                <h2>About Our Institution</h2>
+                <p>PKN Arts and Science College is committed to excellence in education, fostering innovation, and shaping future leaders. Our state-of-the-art digital solutions help create an efficient and progressive learning environment.</p>
+            </section>
+            
+            <section class="testimonials">
+                <h2>What Our Students Say</h2>
+                <p>"This attendance system has made tracking our presence so much easier. No more manual entries!" – A Student</p>
+                <p>"A simple and effective tool for teachers and students alike." – Faculty Member</p>
+            </section>
+        
+
+        </main>
+    </body>
+</html>
